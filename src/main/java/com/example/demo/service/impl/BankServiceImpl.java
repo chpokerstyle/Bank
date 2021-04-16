@@ -5,10 +5,12 @@ import com.example.demo.model.converter.interfacies.BankMap;
 import com.example.demo.model.entity.BankEntity;
 import com.example.demo.repo.BankRepo;
 import com.example.demo.service.interfacies.BankService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class BankServiceImpl implements BankService {
     final BankRepo repo;
 

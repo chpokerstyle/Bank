@@ -7,4 +7,5 @@ public class CreditDTO {
     Long id;
     int limit;
     int percent;
+    int months;
 }
