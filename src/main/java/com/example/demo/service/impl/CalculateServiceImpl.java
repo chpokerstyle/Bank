@@ -3,19 +3,33 @@ package com.example.demo.service.impl;
 import com.example.demo.model.DTO.CreditDTO;
 import com.example.demo.model.DTO.OfferDTO;
 import com.example.demo.model.converter.interfacies.CreditMap;
+import com.example.demo.model.converter.interfacies.OfferMap;
 import com.example.demo.model.entity.CreditEntity;
 import com.example.demo.model.entity.OfferEntity;
+import com.example.demo.repo.CreditRepo;
+import com.example.demo.repo.OfferRepo;
 import com.example.demo.service.interfacies.CalculateService;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculateServiceImpl implements CalculateService {
+    final CreditRepo creditRepo;
+    final OfferRepo offerRepo;
+
+    public CalculateServiceImpl(CreditRepo creditRepo, OfferRepo offerRepo) {
+        this.creditRepo = creditRepo;
+        this.offerRepo = offerRepo;
+    }
+
     @Override
     CreditDTO statement(OfferDTO offerDTO, CreditDTO creditDTO){
         CreditEntity creditEntity = new CreditEntity();//кредит
         creditEntity.setLimit(creditDTO.getLimit());//Сумма необходимая клиенту
         creditEntity.setPercent(creditDTO.getPercent());//проценты
         creditEntity.setMonths(creditDTO.getMonths()); // кол-во месяцев
+
+        creditRepo.save(creditEntity);
+        return CreditMap.INSTANCE.toDto(creditRepo.save(creditEntity));
 
         OfferEntity offer = new OfferEntity();// новое КП
         offer.setClientId(offerDTO.getClientId());//id клиента вписываем вручную, раз уж спринг секьюрити нет...
