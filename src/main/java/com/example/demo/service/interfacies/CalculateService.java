@@ -4,5 +4,6 @@ import com.example.demo.model.DTO.CreditDTO;
 import com.example.demo.model.DTO.OfferDTO;
 
 public interface CalculateService {
-    CreditDTO statement(OfferDTO offerDTO, CreditDTO creditDTO);
+    CreditDTO statement(CreditDTO creditDTO);
+    OfferDTO registration(OfferDTO offerDTO);
 }
