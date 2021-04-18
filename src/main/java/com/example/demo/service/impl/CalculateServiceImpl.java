@@ -39,7 +39,7 @@ public class CalculateServiceImpl implements CalculateService {
         offer.setClientId(creditEntity.getClientEntity().getId());
         int oneРundredPercent = 100;
         offer.setPaymentDate(new Date());//дата платежа
-        offer.setSum(creditDTO.getLimitSum()+creditEntity.getLimitSum()/oneРundredPercent*creditEntity.getPercent());//сумма+проценты
+        offer.setSum(creditEntity.getLimitSum()+creditEntity.getLimitSum()/oneРundredPercent*creditEntity.getPercent());//сумма+проценты
         offer.setSumPay(offer.getSum()/creditEntity.getMonths()); //месячный платёж
         offer.setSumPayDeposit(creditEntity.getLimitSum()/creditEntity.getMonths()); //гашение задолжности без процентов
         offer.setSumPayPercent(offer.getSumPay()-offer.getSumPayDeposit());//гашение процентов
