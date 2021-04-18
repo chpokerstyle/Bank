@@ -12,7 +12,6 @@ public class CreditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    @Column(name = "`limit`")
     int limitSum;
     int percent;
     int months;
@@ -23,4 +22,5 @@ public class CreditEntity {
     OfferEntity offerEntity;
     @ManyToOne(cascade = CascadeType.ALL,optional = false)
     BankEntity bankEntity;
+
 }

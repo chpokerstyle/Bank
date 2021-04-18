@@ -21,8 +21,5 @@ public class CalculateController {
     public CreditDTO createCredit(@RequestBody CreditDTO creditDTO){
         return service.statement(creditDTO);
     }
-    @PostMapping("/registration")
-    public OfferDTO registrationCredit(@RequestBody OfferDTO offerDTO){
-        return service.registration(offerDTO);
-    }
+
 }
