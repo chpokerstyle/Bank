@@ -12,13 +12,14 @@ public class CreditEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    int limit;
+    @Column(name = "`limit`")
+    int limitSum;
     int percent;
     int months;
 
     @ManyToOne(cascade = CascadeType.ALL, optional = false)
     ClientEntity clientEntity;
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
+    @OneToOne(mappedBy = "offerEntity", optional = false)
     OfferEntity offerEntity;
     @ManyToOne(cascade = CascadeType.ALL,optional = false)
     BankEntity bankEntity;

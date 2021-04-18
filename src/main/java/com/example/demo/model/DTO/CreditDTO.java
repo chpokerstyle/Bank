@@ -5,7 +5,11 @@ import lombok.Data;
 @Data
 public class CreditDTO {
     Long id;
-    int limit;
+    int limitSum;
     int percent;
     int months;
+
+    BankDTO bankDTO;
+    ClientDTO clientDTO;
+    OfferDTO offerDTO;
 }

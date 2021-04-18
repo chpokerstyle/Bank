@@ -14,4 +14,7 @@ public class OfferDTO {
     int sumPay;
     int sumPayDeposit;
     int sumPayPercent;
+
+    CreditDTO creditDTO;
+    ClientDTO clientDTO;
 }

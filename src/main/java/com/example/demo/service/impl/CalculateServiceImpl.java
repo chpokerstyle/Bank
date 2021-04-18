@@ -2,10 +2,7 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.DTO.CreditDTO;
 import com.example.demo.model.DTO.OfferDTO;
-import com.example.demo.model.converter.interfacies.CreditMap;
-import com.example.demo.model.converter.interfacies.OfferMap;
-import com.example.demo.model.entity.BankEntity;
-import com.example.demo.model.entity.ClientEntity;
+import com.example.demo.model.converter.interfacies.*;
 import com.example.demo.model.entity.CreditEntity;
 import com.example.demo.model.entity.OfferEntity;
 import com.example.demo.repo.CreditRepo;
@@ -27,38 +24,46 @@ public class CalculateServiceImpl implements CalculateService {
 
     @Override
     public CreditDTO statement(CreditDTO creditDTO){
-        CreditEntity creditEntity = new CreditEntity();//кредит
-        BankEntity bankEntity = new BankEntity();
-        ClientEntity clientEntity = new ClientEntity();
-        creditEntity.setLimit(creditDTO.getLimit());//Сумма необходимая клиенту
-        creditEntity.setPercent(creditDTO.getPercent());//проценты
-        creditEntity.setMonths(creditDTO.getMonths()); // кол-во месяцев
-        bankEntity.setId(bankEntity.getId()); // id банка
-        clientEntity.setId(clientEntity.getId()); // id клиента
+//       // CreditEntity creditDtoFromEntity = CreditMap.INSTANCE.toEntity(creditDTO);
+//        CreditEntity creditEntity = new CreditEntity();//кредит
+//
+//        CreditMap.INSTANCE.toEntity(creditDTO);
+//        creditEntity.setLimitSum(creditDTO.getLimitSum());//Сумма необходимая клиенту
+//        creditEntity.setPercent(creditDTO.getPercent());//проценты
+//        creditEntity.setMonths(creditDTO.getMonths()); // кол-во месяцев
+//        creditEntity.getBankEntity().setId(BankMap.INSTANCE.toEntity(creditDTO.getBankDTO()).getId());// id банка
+//        creditEntity.getClientEntity().setId(ClientMap.INSTANCE.toEntity( creditDTO.getClientDTO()).getId());// id клиента
+CreditEntity creditEntity = CreditMap.INSTANCE.toEntity(creditDTO);
 
-        creditRepo.save(creditEntity);
-        creditEntity = new CreditEntity();
 
-        OfferEntity offer = new OfferEntity();// новое КП
-        int oneРundredPercent = 100;
-        offer.setClientId(offer.getClientId());//id клиента вписываем вручную, раз уж спринг секьюрити нет...
-        offer.setPaymentDate(new Date());//дата платежа
-        offer.setSum(creditEntity.getLimit()+creditEntity.getLimit()/oneРundredPercent*creditEntity.getPercent());//сумма+проценты
-        offer.setSumPay(offer.getSum()/creditEntity.getMonths()); //месячный платёж
-        offer.setSumPayDeposit(creditEntity.getLimit()/creditEntity.getMonths()); //гашение задолжности без процентов
-        offer.setSumPayPercent(offer.getSumPay()-offer.getSumPayDeposit());//гашение процентов
-        registration(OfferMap.INSTANCE.toDto(offer));
+        CreditEntity save = creditRepo.save(creditEntity);
 
-        return CreditMap.INSTANCE.toDto(creditRepo.save(creditEntity));
+        return CreditMap.INSTANCE.toDto(save);
+
     }
 
 
     @Override
     public OfferDTO registration(OfferDTO offerDTO) {
 
-        OfferEntity reg = offerRepo.save(OfferMap.INSTANCE.toEntity(offerDTO));
 
-    return OfferMap.INSTANCE.toDto(reg);
+        OfferEntity offer = new OfferEntity();// новое КП
+        CreditEntity creditEntity = CreditMap.INSTANCE.toEntity(statement(offerDTO.getCreditDTO()));
+
+        offer.setCreditId(creditEntity.getId());
+        offer.setClientId(creditEntity.getClientEntity().getId());
+
+        int oneРundredPercent = 100;
+        offer.setClientId(offer.getClientId());//id клиента вписываем вручную, раз уж спринг секьюрити нет...
+        offer.setPaymentDate(new Date());//дата платежа
+        offer.setSum(creditEntity.getLimitSum()+creditEntity.getLimitSum()/oneРundredPercent*creditEntity.getPercent());//сумма+проценты
+        offer.setSumPay(offer.getSum()/creditEntity.getMonths()); //месячный платёж
+        offer.setSumPayDeposit(creditEntity.getLimitSum()/creditEntity.getMonths()); //гашение задолжности без процентов
+        offer.setSumPayPercent(offer.getSumPay()-offer.getSumPayDeposit());//гашение процентов
+
+        OfferEntity save = offerRepo.save(offer);
+        return OfferMap.INSTANCE.toDto(save);
+
     }
 
 }
